@@ -63,3 +63,43 @@
       return node
   }
 };
+
+// 方法二：迭代
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+ var buildTree = function(preorder, inorder) {
+  if (!preorder.length) return null;
+
+  // 创建根节点
+  let root = new TreeNode(preorder[0])
+  let len = preorder.length
+  let stack = [root]
+  let index = 0;
+  for (let i = 1; i < len; i++) { 
+      let node = stack[stack.length - 1]
+      // 中序遍历index位不等于当前节点，说明为左子树，继续添加入栈
+      if (node.val !== inorder[index]) {
+          node.left = new TreeNode(preorder[i])
+          stack.push(node.left)
+      } else  {
+          // 依次出栈，将index向后移动直到中序遍历中的节点不等于栈顶元素，则找到右子树的父节点
+          while (stack.length !== 0 && stack[stack.length - 1].val == inorder[index]) {
+              node = stack.pop()
+              index++;
+          }
+          node.right = new TreeNode(preorder[i])
+          stack.push(node.right)
+      }
+  }
+  return root
+};

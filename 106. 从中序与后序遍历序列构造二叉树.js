@@ -1,3 +1,4 @@
+// 方法一：递归
 /**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
@@ -39,4 +40,43 @@
 
       return node
   }
+};
+
+// 方法二：迭代
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} inorder
+ * @param {number[]} postorder
+ * @return {TreeNode}
+ */
+ var buildTree = function(inorder, postorder) {
+    if (!inorder.length) return null;
+
+    let len = postorder.length
+    let root = new TreeNode(postorder[len - 1])
+    let index = len - 1
+    let stack = [root]
+    for (let i = len - 2; i >= 0; i--) {
+        let preVal = postorder[i]
+        let node = stack[stack.length - 1]
+        if (node.val !== inorder[index]) {
+            node.right = new TreeNode(preVal)
+            stack.push(node.right)
+        } else {
+            while (stack.length !== 0 && stack[stack.length - 1].val == inorder[index]) {
+                node = stack.pop()
+                index--
+            }
+            node.left = new TreeNode(preVal)
+            stack.push(node.left)
+        }
+    }
+    return root
 };
