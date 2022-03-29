@@ -17,8 +17,8 @@
   }
   return Math.max(...ret);
 };
-/* 
-方法二：数学
+
+// 方法二：数学
 /**
  * @param {number} n
  * @return {number}
@@ -35,4 +35,4 @@
       return 3 ** a * b;
   }
   
-}; */
+}; 
